@@ -13,4 +13,5 @@ userRouter.delete('/:id', objectIdValidation, userDeleteSingleController);
 userRouter.put('/:id', objectIdValidation, validateUpdateUser, userUpdateSingleController);
 userRouter.put('/:id/orders', objectIdValidation, validateOrder, orderAddController);
 userRouter.get('/:id/orders', objectIdValidation, orderGetAllController);
+userRouter.get('/:id/orders/total-price', objectIdValidation, orderGetAllController);
 export default userRouter;
