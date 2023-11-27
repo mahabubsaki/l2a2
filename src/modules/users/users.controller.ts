@@ -5,7 +5,7 @@ import catchAsync from "../../shared/catchAsync";
 import { IUser } from "./users.interface";
 import sendResponse from "../../shared/sendResponse";
 import { Request, Response } from "express";
-import { orderAdd, orderGetAll, userDeleteSingle, userGetAll, userGetSingle, userPost, userUpdateSingle } from "./users.service";
+import { orderAdd, orderGetAll, totalPrice, userDeleteSingle, userGetAll, userGetSingle, userPost, userUpdateSingle } from "./users.service";
 import { Types } from "mongoose";
 
 
@@ -93,5 +93,15 @@ export const orderGetAllController = catchAsync(async (req: Request, res: Respon
         success: true,
         data: result,
         message: "Order fetched successfully!"
+    });
+});
+export const totalPriceController = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await totalPrice(id);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        data: result,
+        message: "Total price calculated successfully!"
     });
 });

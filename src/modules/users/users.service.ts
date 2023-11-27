@@ -46,3 +46,22 @@ export const orderGetAll = async (id: string): Promise<Array<Omit<IOrder, 'userI
     const result = await Order.find({ userId: new Types.ObjectId(id) }, { price: 1, productName: 1, quantity: 1, _id: 0 });
     return result;
 };
+
+export const totalPrice = async (id: string): Promise<{ totalPrice: number; }> => {
+    await User.findUserById(id, false);
+    const result = await Order.aggregate([
+        {
+            $match: {
+                userId: new Types.ObjectId(id)
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                totalPrice: { $sum: '$price' }
+            }
+        }
+    ]);
+    const totalPrice = result.length > 0 ? result[0].totalPrice : 0;
+    return { totalPrice };
+};
