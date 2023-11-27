@@ -42,6 +42,7 @@ export const orderAdd = async (payload: IOrder): Promise<null> => {
 };
 
 export const orderGetAll = async (id: string): Promise<Array<Omit<IOrder, 'userId'>>> => {
+    await User.findUserById(id, false);
     const result = await Order.find({ userId: new Types.ObjectId(id) }, { price: 1, productName: 1, quantity: 1, _id: 0 });
     return result;
 };
