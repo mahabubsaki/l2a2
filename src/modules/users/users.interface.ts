@@ -22,6 +22,13 @@ export interface IUser {
     };
 }
 
+export interface Order {
+    productName: string;
+    price: number;
+    quantity: number;
+}
+
+
 export interface IUserMethods {
     demo: () => string;
 }

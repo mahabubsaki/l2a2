@@ -57,11 +57,21 @@ const userZodSchema = z.object({
         country: z.string(),
     }).strict(),
 }).strict();
+
+
 const userUpdateZodSchema = userZodSchema.deepPartial();
+
+
+const orderZodSchema = z.object({
+    productName: z.string(),
+    price: z.number(),
+    quantity: z.number(),
+}).strict();
 export {
     userMongooseSchema,
     userZodSchema,
-    userUpdateZodSchema
+    userUpdateZodSchema,
+    orderZodSchema
 }
 
 

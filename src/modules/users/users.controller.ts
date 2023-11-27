@@ -70,3 +70,17 @@ export const userUpdateSingleController = catchAsync(async (req: Request, res: R
         message: "User updated successfully!"
     });
 });
+
+
+
+export const orderAddController = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const body = req.body;
+    const result = await orderAdd(id, body);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        data: result,
+        message: "User updated successfully!"
+    });
+});

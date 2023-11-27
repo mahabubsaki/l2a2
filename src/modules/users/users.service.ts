@@ -1,6 +1,6 @@
 /* Service content */
 
-import { IUser } from "./users.interface";
+import { IUser, Order } from "./users.interface";
 import { User } from "./users.model";
 
 
@@ -31,4 +31,11 @@ export const userUpdateSingle = async (id: string, payload: Partial<IUser>): Pro
     const { password, ...result } = await User.findByIdAndUpdate(id, updated, { new: true }).lean() as IUser;
 
     return result;
+};
+
+
+export const orderAdd = async (payload: Order): Promise<null> => {
+    await User.findUserById(id, false);
+    await User.findByIdAndDelete(id);
+    return null;
 };

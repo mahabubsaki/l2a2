@@ -1,6 +1,6 @@
 /* Route content */
 import express from 'express';
-import { validatePostUser, validateUpdateUser } from './users.middleware';
+import { validateOrder, validatePostUser, validateUpdateUser } from './users.middleware';
 import { userDeleteSingleController, userGetAllController, userGetSingleController, userPostController, userUpdateSingleController } from './users.controller';
 import { objectIdValidation } from '../../shared/objectIdValidation';
 
@@ -11,4 +11,5 @@ userRouter.get('/', userGetAllController);
 userRouter.get('/:id', objectIdValidation, userGetSingleController);
 userRouter.delete('/:id', objectIdValidation, userDeleteSingleController);
 userRouter.put('/:id', objectIdValidation, validateUpdateUser, userUpdateSingleController);
+userRouter.put('/:id/orders', objectIdValidation, validateOrder,);
 export default userRouter;
