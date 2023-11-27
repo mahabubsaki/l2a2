@@ -1,7 +1,8 @@
 /* Service content */
 
-import { IUser, Order } from "./users.interface";
-import { User } from "./users.model";
+import { IOrder, IUser } from "./users.interface";
+import { Order, User } from "./users.model";
+import { Types } from "mongoose";
 
 
 export const userPost = async (payload: IUser): Promise<Omit<IUser, 'password'>> => {
@@ -34,8 +35,12 @@ export const userUpdateSingle = async (id: string, payload: Partial<IUser>): Pro
 };
 
 
-export const orderAdd = async (payload: Order): Promise<null> => {
-    await User.findUserById(id, false);
-    await User.findByIdAndDelete(id);
+export const orderAdd = async (payload: IOrder): Promise<null> => {
+    await Order.create(payload);
     return null;
+};
+
+export const orderGetAll = async (id: string): Promise<Array<Omit<IOrder, 'userId'>>> => {
+    const result = await Order.find({ userId: new Types.ObjectId(id) }, { price: 1, productName: 1, quantity: 1, _id: 0 });
+    return result;
 };

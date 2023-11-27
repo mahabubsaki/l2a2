@@ -1,6 +1,6 @@
 /* Interface content */
 
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 
 
 export interface IUser {
@@ -22,11 +22,15 @@ export interface IUser {
     };
 }
 
-export interface Order {
+export interface IOrder {
     productName: string;
     price: number;
     quantity: number;
+    userId: Types.ObjectId;
 }
+
+
+
 
 
 export interface IUserMethods {

@@ -2,7 +2,7 @@
 
 import { Schema } from "mongoose";
 import { z } from 'zod';
-import { IUser, IUserMethods, IUserStatics } from "./users.interface";
+import { IOrder, IUser, IUserMethods, IUserStatics } from "./users.interface";
 import { ApiError } from "../../shared/ApiError";
 
 
@@ -67,11 +67,21 @@ const orderZodSchema = z.object({
     price: z.number(),
     quantity: z.number(),
 }).strict();
+
+const orderSchema = new Schema<IOrder>({
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    productName: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
+});
+
+
 export {
     userMongooseSchema,
     userZodSchema,
     userUpdateZodSchema,
-    orderZodSchema
+    orderZodSchema,
+    orderSchema
 }
 
 

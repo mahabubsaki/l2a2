@@ -5,8 +5,8 @@ import catchAsync from "../../shared/catchAsync";
 import { IUser } from "./users.interface";
 import sendResponse from "../../shared/sendResponse";
 import { Request, Response } from "express";
-import { userDeleteSingle, userGetAll, userGetSingle, userPost, userUpdateSingle } from "./users.service";
-import { ApiError } from "../../shared/ApiError";
+import { orderAdd, orderGetAll, userDeleteSingle, userGetAll, userGetSingle, userPost, userUpdateSingle } from "./users.service";
+import { Types } from "mongoose";
 
 
 
@@ -74,13 +74,24 @@ export const userUpdateSingleController = catchAsync(async (req: Request, res: R
 
 
 export const orderAddController = catchAsync(async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const body = req.body;
-    const result = await orderAdd(id, body);
+    const body = { ...req.body, userId: new Types.ObjectId(req.params.id) };
+    const result = await orderAdd(body);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         data: result,
-        message: "User updated successfully!"
+        message: "Order created successfully!"
+    });
+});
+
+
+export const orderGetAllController = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await orderGetAll(id);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        data: result,
+        message: "Order fetched successfully!"
     });
 });
