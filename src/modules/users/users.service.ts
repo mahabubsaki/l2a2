@@ -36,6 +36,7 @@ export const userUpdateSingle = async (id: string, payload: Partial<IUser>): Pro
 
 
 export const orderAdd = async (payload: IOrder): Promise<null> => {
+    await User.findUserById(payload.userId.toString(), false);
     await Order.create(payload);
     return null;
 };
