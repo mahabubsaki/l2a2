@@ -4,7 +4,7 @@ import { Schema } from "mongoose";
 import { z } from 'zod';
 import { IOrder, IUser, IUserMethods, IUserStatics } from "./users.interface";
 import { ApiError } from "../../shared/ApiError";
-
+import bcrypt from 'bcrypt';
 
 
 const userMongooseSchema = new Schema<IUser, IUserStatics, IUserMethods>({
@@ -26,7 +26,11 @@ const userMongooseSchema = new Schema<IUser, IUserStatics, IUserMethods>({
     },
 });
 
-
+async function passwordHasher(password: string) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
+}
 
 userMongooseSchema.statics.findUserById = async function (id: string, update = false) {
     const exist = update ? await this.findById(id).lean() : await this.findById(id).select('-password').lean();
@@ -75,6 +79,37 @@ const orderSchema = new Schema<IOrder>({
     quantity: { type: Number, required: true },
 });
 
+
+userMongooseSchema.pre('save', async function (next) {
+    try {
+
+
+        this.password = await passwordHasher(this.password);
+
+        next();
+    } catch (error) {
+        if (error instanceof Error) {
+            next(error);
+        }
+    }
+});
+
+
+userMongooseSchema.pre('findOneAndUpdate', async function (next) {
+    try {
+        const update = this.getUpdate() as IUser;
+        if (update.password) {
+
+            update.password = await passwordHasher(update.password);
+        }
+
+        next();
+    } catch (error) {
+        if (error instanceof Error) {
+            next(error);
+        }
+    }
+});
 
 export {
     userMongooseSchema,
