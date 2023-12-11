@@ -26,7 +26,7 @@ export interface IOrder {
     productName: string;
     price: number;
     quantity: number;
-    userId: Types.ObjectId;
+    userId: string;
 }
 
 

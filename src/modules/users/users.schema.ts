@@ -33,7 +33,8 @@ async function passwordHasher(password: string) {
 }
 
 userMongooseSchema.statics.findUserById = async function (id: string, update = false) {
-    const exist = update ? await this.findById(id).lean() : await this.findById(id).select('-password').lean();
+    const exist = update ? await this.findOne({ userId: id }).lean() : await this.findOne({ userId: id }).select('-password').lean();
+
 
     if (!exist) {
         throw new ApiError(404, 'User not found with given id');
@@ -52,7 +53,7 @@ const userZodSchema = z.object({
         lastName: z.string(),
     }).strict(),
     age: z.number().nullable(),
-    email: z.string(),
+    email: z.string().email({ message: "not a valid email" }),
     isActive: z.boolean().default(false),
     hobbies: z.array(z.string()),
     address: z.object({
@@ -73,7 +74,7 @@ const orderZodSchema = z.object({
 }).strict();
 
 const orderSchema = new Schema<IOrder>({
-    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    userId: { type: String, required: true },
     productName: { type: String, required: true },
     price: { type: Number, required: true },
     quantity: { type: Number, required: true },
@@ -98,6 +99,7 @@ userMongooseSchema.pre('save', async function (next) {
 userMongooseSchema.pre('findOneAndUpdate', async function (next) {
     try {
         const update = this.getUpdate() as IUser;
+
         if (update.password) {
 
             update.password = await passwordHasher(update.password);

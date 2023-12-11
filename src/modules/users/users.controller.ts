@@ -74,7 +74,7 @@ export const userUpdateSingleController = catchAsync(async (req: Request, res: R
 
 
 export const orderAddController = catchAsync(async (req: Request, res: Response) => {
-    const body = { ...req.body, userId: new Types.ObjectId(req.params.id) };
+    const body = { ...req.body, userId: req.params.id };
     const result = await orderAdd(body);
     sendResponse(res, {
         statusCode: httpStatus.OK,
