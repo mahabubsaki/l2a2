@@ -6,7 +6,7 @@ import { IUser } from "./users.interface";
 import sendResponse from "../../shared/sendResponse";
 import { Request, Response } from "express";
 import { orderAdd, orderGetAll, totalPrice, userDeleteSingle, userGetAll, userGetSingle, userPost, userUpdateSingle } from "./users.service";
-import { Types } from "mongoose";
+
 
 
 

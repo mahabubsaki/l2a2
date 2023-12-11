@@ -1,6 +1,6 @@
 /* Interface content */
 
-import { Model, Types } from "mongoose";
+import { Model } from "mongoose";
 
 
 export interface IUser {
